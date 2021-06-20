@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
-    <meta charset="utf-8">
+    <meta name="viewport" content="width=300,maximum-scale=5.0,user-scalable=0">
     <title>¿</title>
 </head>
 <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -10,9 +11,11 @@
 <body>
 
     <p>要使用的图片:</p>
-    <img id="portrait" src="https://github.com/zzh01028/party100/blob/main/132.jpg?raw=true" width="132px" height="132px">
+    <!-- <img id="portrait" src="https://github.com/zzh01028/party100/blob/main/132.jpg?raw=true" width="132px" height="132px"> -->
+    <img id="portrait" src="132.jpg" width="132px" height="132px">
     <input type="file" name="file" onchange="showPreview(this)" />
-    <img id="scream" src="https://github.com/zzh01028/party100/blob/main/100.png?raw=true" style="width: 180px;height: 133px; opacity: 0;">
+    <!-- <img id="scream" src="https://github.com/zzh01028/party100/blob/main/100.png?raw=true" style="width: 180px;height: 133px; opacity: 0;"> -->
+    <img id="scream" src="100.png" style="width: 180px;height: 133px; opacity: 0;">
     <p>画布:</p>
     <canvas id="myCanvas" width="300" height="300" style="border:1px solid #d3d3d3;" crossorigin="anonymous">
     您的浏览器不支持 HTML5 canvas 标签。
@@ -45,17 +48,8 @@
                 flag = true;
                 console.log(flag)
             });
-            c.touchstart(function() {
 
-                flag = true;
-                console.log(flag)
-            });
             $("canvas").mouseup(function() {
-
-                flag = false;
-                console.log(flag)
-            });
-            c.touchend(function() {
 
                 flag = false;
                 console.log(flag)
@@ -63,11 +57,11 @@
 
 
             c.onmousemove = move;
-            c.touchmove = move
+            c.touchmove = move;
 
 
-            var move = function(e) {
-                //console.log(flag)
+            function move(e) {
+                // console.log("flag")
                 if (flag) {
                     // e.offsetX为事件相对事件源的坐标
                     x = e.offsetX - img.width / 2;
@@ -99,6 +93,19 @@
 
 
         }
+
+        c.touchstart(function() {
+
+            flag = true;
+            console.log(flag)
+        });
+
+        c.touchend(function() {
+
+            flag = false;
+            console.log(flag)
+        });
+
 
         $("#save").click(function() {
             console.log("保存")
