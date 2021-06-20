@@ -43,11 +43,11 @@
                 y = 0;
             var flag = false;
             var k = 1;
-            $("canvas").mousedown(function() {
+            // $("canvas").mousedown(function() {
 
-                flag = true;
-                console.log(flag)
-            });
+            //     flag = true;
+            //     console.log(flag)
+            // });
 
             $("canvas").mouseup(function() {
 
@@ -55,9 +55,17 @@
                 console.log(flag)
             });
 
+            $('canvas').on('mousedown touchstart', function(e) {
+                //禁用事件默认动作，如果不加，再触屏情况下，可能出现问题
+                flag = true;
+                console.log(flag)
+                $('canvas').on('mousemove touchmove',
+                    move
+                );
+            });
 
-            c.onmousemove = move;
-            c.touchmove = move;
+            // c.onmousemove = move;
+            // c.touchmove = move;
 
 
             function move(e) {
@@ -94,17 +102,7 @@
 
         }
 
-        c.touchstart(function() {
 
-            flag = true;
-            console.log(flag)
-        });
-
-        c.touchend(function() {
-
-            flag = false;
-            console.log(flag)
-        });
 
 
         $("#save").click(function() {
