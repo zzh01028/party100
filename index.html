@@ -21,6 +21,7 @@
     您的浏览器不支持 HTML5 canvas 标签。
     </canvas>
     <p>缩放:</p>
+    <p id="text"></p>
     &nbsp;&nbsp;&nbsp;<button id="big" width="150" height="30">放大  +</button>&nbsp;&nbsp;&nbsp;<button id="small" width="150" height="60">缩小  —</button>&nbsp;&nbsp;&nbsp;
     <!-- <button id="save" width="150" height="60">保存（save）</button> -->
     <div id="box"></div>
@@ -34,6 +35,7 @@
         // portrait.setAttribute("crossOrigin", 'Anonymous')
         var downloadedImg = c;
         var imageBox = document.getElementById("box");
+        var t = document.getElementById("text");
         // img.setAttribute('crossorigin', 'anonymous');
         // portrait.setAttribute('crossorigin', 'anonymous');
         portrait.onload = function() {
@@ -59,6 +61,7 @@
                 //禁用事件默认动作，如果不加，再触屏情况下，可能出现问题
                 flag = true;
                 console.log(flag)
+                t.innerText = flag
                 $('canvas').on('mousemove touchmove',
                     move
                 );
