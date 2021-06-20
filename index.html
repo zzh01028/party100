@@ -19,7 +19,7 @@
     </canvas>
     <p>缩放:</p>
     &nbsp;&nbsp;&nbsp;<button id="big" width="150" height="30">放大  +</button>&nbsp;&nbsp;&nbsp;<button id="small" width="150" height="60">缩小  —</button>&nbsp;&nbsp;&nbsp;
-  <button id="save" width="150" height="60">保存（跨域有问题）</button>
+    <!-- <button id="save" width="150" height="60">保存（save）</button> -->
     <div id="box"></div>
 
     <script crossorigin="anonymous">
@@ -45,13 +45,28 @@
                 flag = true;
                 console.log(flag)
             });
+            c.touchstart(function() {
+
+                flag = true;
+                console.log(flag)
+            });
             $("canvas").mouseup(function() {
 
                 flag = false;
                 console.log(flag)
             });
+            c.touchend(function() {
 
-            c.onmousemove = function(e) {
+                flag = false;
+                console.log(flag)
+            });
+
+
+            c.onmousemove = move;
+            c.touchmove = move
+
+
+            var move = function(e) {
                 //console.log(flag)
                 if (flag) {
                     // e.offsetX为事件相对事件源的坐标
