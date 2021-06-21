@@ -51,7 +51,7 @@
         <p>缩放:</p>
         <p id="text"></p>
         &nbsp;&nbsp;&nbsp;<button id="big" width="150" height="30">放大  +</button>&nbsp;&nbsp;&nbsp;<button id="small" width="150" height="60">缩小  —</button>&nbsp;&nbsp;&nbsp;
-        <button id="save" width="150" height="60">保存（save）</button>
+        <!-- <button id="save" width="150" height="60">保存（save）</button> -->
         <p>预览:</p>
         <canvas id="myCanvas" width="300" height="300" style="border:1px solid #d3d3d3;" crossorigin="anonymous">
 			您的浏览器不支持 HTML5 canvas 标签。
@@ -159,8 +159,14 @@
 
         var portrait = document.getElementById("portrait");
         var img = document.getElementById("scream");
+        // portrait.onload = function() {
+        //         ctx.clearRect(0, 0, 500, 400);
+        //         ctx.drawImage(portrait, 0, 0, 300, 300);
+        //         ctx.drawImage(img, 0, 0, 180, 133);
+
+        //     }
         window.onload = function() {
-            //ctx.clearRect(0, 0, 500, 400);
+            ctx.clearRect(0, 0, 500, 400);
             ctx.drawImage(portrait, 0, 0, 300, 300);
             ctx.drawImage(img, 0, 0, 180, 133);
 
@@ -180,15 +186,24 @@
 
 
         $("#big").click(function() {
-            k = k + 0.1;
+            //k = k + 0.1;
+
+
             // ctx.clearRect(0, 0, 500, 400);
             // ctx.drawImage(portrait, 0, 0, 300, 300);
             // ctx.drawImage(img, x, y, 180 * k, 130 * k);
+            x = div2.style.left.split("px")[0]
+            y = div2.style.top.split("px")[0]
             w = div2.style.width.split("px")[0]
             h = div2.style.height.split("px")[0]
+            if (h < 300)
+                k = 1.1;
+            else {
+                k = 1
+            }
             w = w * k;
             h = h * k;
-            console.log(w, h)
+            console.log(x, y, w, h, k)
             $("#div2").css({
                 'background-size': 'auto 100%'
             });
@@ -199,10 +214,13 @@
             ctx.drawImage(img, x, y, w, h);
         });
         $("#small").click(function() {
-            k = k - 0.1;
+            // k = k - 0.1;
+            k = 0.9091;
             // ctx.clearRect(0, 0, 500, 400);
             // ctx.drawImage(portrait, 0, 0, 300, 300);
             // ctx.drawImage(img, x, y, 180 * k, 130 * k);
+            x = div2.style.left.split("px")[0]
+            y = div2.style.top.split("px")[0]
             w = div2.style.width.split("px")[0]
             h = div2.style.height.split("px")[0]
             w = w * k;
@@ -213,10 +231,25 @@
             });
             div2.style.width = w + "px";
             div2.style.height = h + "px";
-            console.log(x, y, w, h)
+            console.log(x, y, w, h, k)
             ctx.clearRect(0, 0, 500, 400);
             ctx.drawImage(portrait, 0, 0, 300, 300);
             ctx.drawImage(img, x, y, w, h);
+        });
+
+        $("#save").click(function() {
+            console.log("保存")
+
+            var image = new Image();
+            var mycanvas = document.getElementById("myCanvas");
+
+            image.src = c.toDataURL({
+                format: 'image/png',
+
+            });
+            var url = image.src.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+            return image;
+            window.open(url);
         });
     </script>
 </body>
