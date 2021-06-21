@@ -53,9 +53,14 @@
         &nbsp;&nbsp;&nbsp;<button id="big" width="150" height="30">放大  +</button>&nbsp;&nbsp;&nbsp;<button id="small" width="150" height="60">缩小  —</button>&nbsp;&nbsp;&nbsp;
         <!-- <button id="save" width="150" height="60">保存（save）</button> -->
         <p>预览:</p>
-        <canvas id="myCanvas" width="300" height="300" style="border:1px solid #d3d3d3;" crossorigin="anonymous">
+        <p>PC端右键保存，移动端截屏:</p>
+        <canvas id="myCanvas" width="600px" height="600px" style="border:1px solid #d3d3d3;width:300px;height:300px" crossorigin="anonymous">
 			您的浏览器不支持 HTML5 canvas 标签。
-			</canvas>
+            </canvas>
+
+        <!-- <canvas id="myCanvas" width="300" height="300" style="border:1px solid #d3d3d3;" crossorigin="anonymous">
+                您的浏览器不支持 HTML5 canvas 标签。
+                </canvas> -->
 
 
     </div>
@@ -124,9 +129,9 @@
 
                 w = div2.style.width.split("px")[0]
                 h = div2.style.height.split("px")[0]
-                ctx.clearRect(0, 0, 500, 400);
-                ctx.drawImage(portrait, 0, 0, 300, 300);
-                ctx.drawImage(img, x, y, w, h);
+                ctx.clearRect(0, 0, 600, 600);
+                ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
+                ctx.drawImage(img, x, y, w * 2, h * 2);
                 //阻止页面的滑动默认事件
                 document.addEventListener("touchmove", function() {
                     event.preventDefault();
@@ -166,9 +171,9 @@
 
         //     }
         window.onload = function() {
-            ctx.clearRect(0, 0, 500, 400);
-            ctx.drawImage(portrait, 0, 0, 300, 300);
-            ctx.drawImage(img, 0, 0, 180, 133);
+            ctx.clearRect(0, 0, 600, 600);
+            ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
+            ctx.drawImage(img, 0, 0, 180 * 2, 133 * 2);
 
         }
 
@@ -209,9 +214,9 @@
             });
             div2.style.width = w + "px";
             div2.style.height = h + "px";
-            ctx.clearRect(0, 0, 500, 400);
-            ctx.drawImage(portrait, 0, 0, 300, 300);
-            ctx.drawImage(img, x, y, w, h);
+            ctx.clearRect(0, 0, 600, 600);
+            ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
+            ctx.drawImage(img, x, y, w * 2, h * 2);
         });
         $("#small").click(function() {
             // k = k - 0.1;
@@ -232,9 +237,10 @@
             div2.style.width = w + "px";
             div2.style.height = h + "px";
             console.log(x, y, w, h, k)
-            ctx.clearRect(0, 0, 500, 400);
-            ctx.drawImage(portrait, 0, 0, 300, 300);
-            ctx.drawImage(img, x, y, w, h);
+
+            ctx.clearRect(0, 0, 600, 600);
+            ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
+            ctx.drawImage(img, x, y, w * 2, h * 2);
         });
 
         $("#save").click(function() {
