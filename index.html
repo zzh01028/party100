@@ -1,292 +1,40 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>适配移动端和pc端的拖动效果</title>
-    <style>
-        #div2 {
-            position: relative;
-            top: 0;
-            left: 0;
-            /* width: 180px;
-            height: 133px; */
-            /* background: #bbbbbb; */
-            touch-action: none;
-            background-image: url(100.png);
-            background-repeat: no-repeat;
-            background-size: 180px 133px;
-            /* background-size: 'auto 100%'; */
-            position: fixed;
-        }
-        
-        #container {
-            width: 300px;
-            height: 800px;
-            border: 1px solid #d3d3d3;
-            left: 50%;
-            position: relative;
-            transform: translate(-50%, 0)
-        }
-        
-        #scream {
-            position: fixed;
-            z-index: -1;
-            left: 0px;
-            top: 0px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
+<style>
+    #container {
+        width: 400px;
+        height: 800px;
+        border: 1px solid #d3d3d3;
+        left: 50%;
+        position: relative;
+        transform: translate(-50%, 0)
+    }
+    
+    #btn {
+        position: relative;
+        background-color: cyan;
+        border-radius: 25px;
+        padding: 25px;
+        margin: 25px;
+        text-align: center;
+        top: 250px;
+        background-image: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 30%, #2cb5e8 75%, #2cdce8 100%);
+    }
+</style>
 
 <body>
+
     <div id="container">
-
-        <div id="div2" style="width: 180px;height: 133px;">
-            <!-- <img id="scream" src="100.png" style="width: 180px;height: 133px;"> -->
+        <div id="btn">
+            <a href="http://16.162.86.119/">关于我舍友说这个很难我说我一个晚上可以搞定但是又没有完全搞定这件事</a>
         </div>
-        <img id="portrait" src="132.jpg" width="300px" height="300px" style="
-		user-select:none;border:1px solid #d3d3d3;">
-        <p>拖动制作</p>
-        <input type="file" name="file" onchange="showPreview(this)" />
-        <img id="scream" src="100.png" style="width: 180px;height: 133px; opacity: 0;">
-        <!-- <p>缩放:</p> -->
-        <form method="post" action="demoform.php">
-            <label for="points">缩放:</label>
-            <input id="range" type="range" name="points" id="points" value="100" min="0" max="167">
-        </form>
-        <p id="text"></p>
-        <!-- &nbsp;&nbsp;&nbsp;<button id="big" width="150" height="30">放大  +</button>&nbsp;&nbsp;&nbsp;<button id="small" width="150" height="60">缩小  —</button>&nbsp;&nbsp;&nbsp; -->
-        <!-- <button id="save" width="150" height="60">保存（save）</button> -->
-        <!-- <p>预览:</p> -->
-        <!-- <p>PC端右键保存，移动端截屏:</p> -->
-
-        <canvas id="myCanvas" width="600px" height="600px" style="border:1px solid #d3d3d3;width:300px;height:300px;opacity:0" crossorigin="anonymous">
-			您的浏览器不支持 HTML5 canvas 标签。
-            </canvas>
-
-        <!-- <canvas id="myCanvas" width="300" height="300" style="border:1px solid #d3d3d3;" crossorigin="anonymous">
-                您的浏览器不支持 HTML5 canvas 标签。
-                </canvas> -->
-
-
     </div>
-    <!-- <script src="https://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script>
-        //是否拖动
-        var flag = false;
-        //
-        var k = 1;
-        var cur = {
-            x: 0,
-            y: 0
-        }
-        var nx, ny, dx, dy, x, y;
-        var c = document.getElementById("myCanvas");
-        var ctx = c.getContext("2d");
-
-
-        function down() {
-            flag = true;
-            var touch;
-            if (event.touches) {
-                touch = event.touches[0];
-            } else {
-                touch = event;
-            }
-            console.log(event)
-            cur.x = touch.clientX;
-            cur.y = touch.clientY;
-            dx = div2.offsetLeft;
-            dy = div2.offsetTop;
-        }
-
-        function move() {
-            if (flag) {
-                var touch;
-                if (event.touches) {
-                    touch = event.touches[0];
-                } else {
-                    touch = event;
-                }
-                nx = touch.clientX - cur.x;
-                ny = touch.clientY - cur.y;
-                x = dx + nx;
-                y = dy + ny;
-                if (x < 0) {
-                    x = 0
-                }
-                console.log(300 - div2.style.width.split("px")[0])
-                if (x > 300 - div2.style.width.split("px")[0]) {
-                    x = 300 - div2.style.width.split("px")[0]
-                }
-                if (y < 0) {
-                    y = 0
-                }
-
-                if (y > 300 - div2.style.height.split("px")[0]) {
-                    y = 300 - div2.style.height.split("px")[0]
-                }
-
-
-
-                div2.style.left = x + "px";
-                div2.style.top = y + "px";
-
-                w = div2.style.width.split("px")[0]
-                h = div2.style.height.split("px")[0]
-                ctx.clearRect(0, 0, 600, 600);
-                ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
-                ctx.drawImage(img, x, y, w * 2, h * 2);
-                //阻止页面的滑动默认事件
-                document.addEventListener("touchmove", function() {
-                    event.preventDefault();
-                }, false);
-            }
-        }
-        //鼠标释放时候的函数
-        function end() {
-            flag = false;
-        }
-        var div2 = document.getElementById("div2");
-        div2.addEventListener("mousedown", function() {
-            down();
-        }, false);
-        div2.addEventListener("touchstart", function() {
-            down();
-        }, false)
-        div2.addEventListener("mousemove", function() {
-            move();
-        }, false);
-        div2.addEventListener("touchmove", function() {
-            move();
-        }, false)
-        document.body.addEventListener("mouseup", function() {
-            end();
-        }, false);
-        div2.addEventListener("touchend", function() {
-            end();
-        }, false);
-
-        var portrait = document.getElementById("portrait");
-        var img = document.getElementById("scream");
-        // portrait.onload = function() {
-        //         ctx.clearRect(0, 0, 500, 400);
-        //         ctx.drawImage(portrait, 0, 0, 300, 300);
-        //         ctx.drawImage(img, 0, 0, 180, 133);
-
-        //     }
-        window.onload = function() {
-            ctx.clearRect(0, 0, 600, 600);
-            ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
-            ctx.drawImage(img, 0, 0, 180 * 2, 133 * 2);
-
-        }
-
-
-        function showPreview(source) {
-            var file = source.files[0];
-            if (window.FileReader) {
-                var fr = new FileReader();
-                fr.onloadend = function(e) {
-                    document.getElementById("portrait").src = e.target.result;
-                };
-                fr.readAsDataURL(file);
-            }
-        }
-
-
-        $("#big").click(function() {
-            //k = k + 0.1;
-
-
-            // ctx.clearRect(0, 0, 500, 400);
-            // ctx.drawImage(portrait, 0, 0, 300, 300);
-            // ctx.drawImage(img, x, y, 180 * k, 130 * k);
-            x = div2.style.left.split("px")[0]
-            y = div2.style.top.split("px")[0]
-            w = div2.style.width.split("px")[0]
-            h = div2.style.height.split("px")[0]
-            if (w < 300)
-                k = 1.1;
-            else {
-                k = 1
-            }
-            w = w * k;
-            h = h * k;
-            console.log(x, y, w, h, k)
-            $("#div2").css({
-                'background-size': 'auto 100%'
-            });
-            div2.style.width = w + "px";
-            div2.style.height = h + "px";
-            ctx.clearRect(0, 0, 600, 600);
-            ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
-            ctx.drawImage(img, x, y, w * 2, h * 2);
-        });
-        $("#small").click(function() {
-            // k = k - 0.1;
-            k = 0.9091;
-            // ctx.clearRect(0, 0, 500, 400);
-            // ctx.drawImage(portrait, 0, 0, 300, 300);
-            // ctx.drawImage(img, x, y, 180 * k, 130 * k);
-            x = div2.style.left.split("px")[0]
-            y = div2.style.top.split("px")[0]
-            w = div2.style.width.split("px")[0]
-            h = div2.style.height.split("px")[0]
-            w = w * k;
-            h = h * k;
-            console.log(w, h)
-            $("#div2").css({
-                'background-size': 'auto 100%'
-            });
-            div2.style.width = w + "px";
-            div2.style.height = h + "px";
-            console.log(x, y, w, h, k)
-
-            ctx.clearRect(0, 0, 600, 600);
-            ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
-            ctx.drawImage(img, x, y, w * 2, h * 2);
-        });
-
-        $("#range").change(function(e) {
-            console.log(e)
-            var value = document.getElementById('range').value;
-            console.log(value)
-            value = value / 100;
-            x = div2.style.left.split("px")[0]
-            y = div2.style.top.split("px")[0]
-                // w = div2.style.width.split("px")[0]
-                // h = div2.style.height.split("px")[0]
-            let w = 180 * value;
-            let h = 133 * value;
-            console.log(w, h)
-            $("#div2").css({
-                'background-size': 'auto 100%'
-            });
-            div2.style.width = w + "px";
-            div2.style.height = h + "px";
-            console.log(x, y, w, h, k)
-
-            ctx.clearRect(0, 0, 600, 600);
-            ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
-            ctx.drawImage(img, x, y, w * 2, h * 2);
-        })
-
-        $("#save").click(function() {
-            console.log("保存")
-
-            var image = new Image();
-            var mycanvas = document.getElementById("myCanvas");
-
-            image.src = c.toDataURL({
-                format: 'image/png',
-
-            });
-            var url = image.src.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
-            return image;
-            window.open(url);
-        });
-    </script>
 </body>
 
 </html>
