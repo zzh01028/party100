@@ -48,13 +48,18 @@
         <p>拖动制作</p>
         <input type="file" name="file" onchange="showPreview(this)" />
         <img id="scream" src="100.png" style="width: 180px;height: 133px; opacity: 0;">
-        <p>缩放:</p>
+        <!-- <p>缩放:</p> -->
+        <form method="post" action="demoform.php">
+            <label for="points">缩放:</label>
+            <input id="range" type="range" name="points" id="points" value="100" min="0" max="167">
+        </form>
         <p id="text"></p>
-        &nbsp;&nbsp;&nbsp;<button id="big" width="150" height="30">放大  +</button>&nbsp;&nbsp;&nbsp;<button id="small" width="150" height="60">缩小  —</button>&nbsp;&nbsp;&nbsp;
+        <!-- &nbsp;&nbsp;&nbsp;<button id="big" width="150" height="30">放大  +</button>&nbsp;&nbsp;&nbsp;<button id="small" width="150" height="60">缩小  —</button>&nbsp;&nbsp;&nbsp; -->
         <!-- <button id="save" width="150" height="60">保存（save）</button> -->
-        <p>预览:</p>
-        <p>PC端右键保存，移动端截屏:</p>
-        <canvas id="myCanvas" width="600px" height="600px" style="border:1px solid #d3d3d3;width:300px;height:300px" crossorigin="anonymous">
+        <!-- <p>预览:</p> -->
+        <!-- <p>PC端右键保存，移动端截屏:</p> -->
+
+        <canvas id="myCanvas" width="600px" height="600px" style="border:1px solid #d3d3d3;width:300px;height:300px;opacity:0" crossorigin="anonymous">
 			您的浏览器不支持 HTML5 canvas 标签。
             </canvas>
 
@@ -64,7 +69,7 @@
 
 
     </div>
-
+    <!-- <script src="https://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
         //是否拖动
@@ -201,7 +206,7 @@
             y = div2.style.top.split("px")[0]
             w = div2.style.width.split("px")[0]
             h = div2.style.height.split("px")[0]
-            if (h < 300)
+            if (w < 300)
                 k = 1.1;
             else {
                 k = 1
@@ -242,6 +247,30 @@
             ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
             ctx.drawImage(img, x, y, w * 2, h * 2);
         });
+
+        $("#range").change(function(e) {
+            console.log(e)
+            var value = document.getElementById('range').value;
+            console.log(value)
+            value = value / 100;
+            x = div2.style.left.split("px")[0]
+            y = div2.style.top.split("px")[0]
+                // w = div2.style.width.split("px")[0]
+                // h = div2.style.height.split("px")[0]
+            let w = 180 * value;
+            let h = 133 * value;
+            console.log(w, h)
+            $("#div2").css({
+                'background-size': 'auto 100%'
+            });
+            div2.style.width = w + "px";
+            div2.style.height = h + "px";
+            console.log(x, y, w, h, k)
+
+            ctx.clearRect(0, 0, 600, 600);
+            ctx.drawImage(portrait, 0, 0, 300 * 2, 300 * 2);
+            ctx.drawImage(img, x, y, w * 2, h * 2);
+        })
 
         $("#save").click(function() {
             console.log("保存")
