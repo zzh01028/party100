@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta name="viewport" content="width=300,maximum-scale=5.0,user-scalable=0">
+    <title>¿</title>
+    <style>
+        #scream {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 180px;
+            height: 133px;
+            /* background: #bbbbbb; */
+            touch-action: none;
+            background-image: url(100.png);
+            background-repeat: no-repeat;
+            background-size: 180px 133px;
+        }
+    </style>
+</head>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<body>
+    <div width="320" height="800">
+        <p>要使用的图片:</p>
+        <!-- <img id="portrait" src="https://github.com/zzh01028/party100/blob/main/132.jpg?raw=true" width="132px" height="132px"> -->
+        <img id="portrait" src="132.jpg" width="132px" height="132px">
+        <input type="file" name="file" onchange="showPreview(this)" />
+        <!-- <img id="scream" src="https://github.com/zzh01028/party100/blob/main/100.png?raw=true" style="width: 180px;height: 133px; opacity: 0;"> -->
+        <!-- <img id="scream" src="100.png" style="width: 180px;height: 133px; opacity: 0;"> -->
+        <div id="scream"></div>
+        <p>画布:</p>
+        <canvas id="myCanvas" width="300" height="300" style="border:1px solid #d3d3d3;" crossorigin="anonymous">
+    您的浏览器不支持 HTML5 canvas 标签。
+    </canvas>
+        <p>缩放:</p>
+        <p id="text"></p>
+        &nbsp;&nbsp;&nbsp;<button id="big" width="150" height="30">放大  +</button>&nbsp;&nbsp;&nbsp;<button id="small" width="150" height="60">缩小  —</button>&nbsp;&nbsp;&nbsp;
+        <button id="save" width="150" height="60">保存（save）</button>
+        <div id="box"></div>
+    </div>
+
+    <script crossorigin="anonymous">
+        var cur = {
+            x: 0,
+            y: 0
+        }
+        var nx, ny, dx, dy, x, y;
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        var img = document.getElementById("scream");
+
+        var portrait = document.getElementById("portrait");
+
+        var downloadedImg = c;
+        var imageBox = document.getElementById("box");
+        var t = document.getElementById("text");
+        // img.setAttribute('crossorigin', 'anonymous');
+        // portrait.setAttribute('crossorigin', 'anonymous');
+        // img.onload = function(e) {
+
+        //     ctx.drawImage(img, 0, 0, 180, 130);
+
+        //     base64 = c.toDataURL("image/png");
+        // }
+
+        portrait.onload = function() {
+            ctx.drawImage(portrait, 0, 0, 300, 300);
+            ctx.drawImage(img, 0, 0, 180, 130);
+            var x = 0,
+                y = 0;
+            var flag = false;
+            var k = 1;
+            // $("canvas").mousedown(function() {
+
+            //     flag = true;
+            //     console.log(flag)
+            // });
+            /*
+            $("canvas").mouseup(function() {
+
+                flag = false;
+                console.log(flag)
+            }); */
+
+            $("canvas").on('mouseup touchend', function() {
+
+                flag = false;
+                console.log(flag)
+            });
+            $('canvas').on('mousedown touchstart', down());
+            // $('canvas').on('mousedown touchstart', function(e) {
+            //     //禁用事件默认动作，如果不加，再触屏情况下，可能出现问题
+
+            //     e.preventDefault();
+            //     flag = true;
+            //     console.log(flag)
+            //         // t.innerText = flag
+            //         // var t = down()
+            //     $('canvas').on('mousemove touchmove',
+            //         move)
+            // });
+            // c.onmousemove = move;
+            // c.touchmove = move;
+
+            function down() {
+                flag = true;
+                var touch;
+                if (event.touches) {
+                    touch = event.touches[0];
+                } else {
+                    touch = event;
+                }
+                cur.x = touch.clientX;
+                cur.y = touch.clientY;
+                dx = c.offsetLeft;
+                dy = c.offsetTop;
+            }
+
+
+
+            function move(event) {
+                // console.log("flag")
+                var e;
+                if (flag) {
+                    if (event.touches) {
+                        console.log("touchu") = event.touches[0]
+                            // e = event
+                            // e.preventDefault();
+                    } else {
+                        e = event;
+                    }
+
+
+                    // e.offsetX为事件相对事件源的坐标
+                    if (e.offsetX) {
+                        nx = touch.clientX - cur.x;
+                        ny = touch.clientY - cur.y;
+                        x = dx + nx;
+                        y = dy + ny;
+                        // x = e.offsetX - img.width / 2;
+                        // // e.offsetY为事件相对事件源的坐标
+                        // y = e.offsetY - img.height / 2;
+                        document.addEventListener("touchmove", function() {
+                            event.preventDefault();
+                        }, false);
+
+                    }
+                    // if (c.offsetX) {
+                    //     x = c.offsetX - img.width / 2;
+                    //     // e.offsetY为事件相对事件源的坐标
+                    //     y = c.offsetY - img.height / 2;
+
+                    // }
+                    console.log(e, e.offsetX, c.offsetLeft)
+                    console.log(x, y);
+                };
+                // 使用定时器，不停的清画布，重绘图片以实现类似拖拽的效果
+                setInterval(function() {
+                    ctx.clearRect(0, 0, 500, 400);
+                    ctx.drawImage(portrait, 0, 0, 300, 300);
+                    ctx.drawImage(img, x, y, 180 * k, 130 * k);
+                }, 20);
+            }
+            $("#big").click(function() {
+                k = k + 0.1;
+                ctx.clearRect(0, 0, 500, 400);
+                ctx.drawImage(portrait, 0, 0, 300, 300);
+                ctx.drawImage(img, x, y, 180 * k, 130 * k);
+            });
+            $("#small").click(function() {
+                k = k - 0.1;
+                ctx.clearRect(0, 0, 500, 400);
+                ctx.drawImage(portrait, 0, 0, 300, 300);
+                ctx.drawImage(img, x, y, 180 * k, 130 * k);
+            });
+
+
+
+
+        }
+
+
+
+
+        $("#save").click(function() {
+            console.log("保存")
+
+            var image = new Image();
+            var mycanvas = document.getElementById("myCanvas");
+
+            image.src = c.toDataURL({
+                format: 'image/png',
+
+            });
+            var url = image.src.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+            return image;
+            window.open(url);
+        });
+
+        function showPreview(source) {
+            var file = source.files[0];
+            if (window.FileReader) {
+                var fr = new FileReader();
+                fr.onloadend = function(e) {
+                    document.getElementById("portrait").src = e.target.result;
+                };
+                fr.readAsDataURL(file);
+            }
+        }
+    </script>
+
+
+
+</body>
+
+</html>
